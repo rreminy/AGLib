@@ -7,7 +7,7 @@ using System.Net.NetworkInformation;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using AG.Collections.Concurrent.Internal;
+using AG.Collections.Generic;
 using static AG.Collections.Concurrent.Buckets.Bucket;
 
 namespace AG.Collections.Concurrent.Buckets
@@ -16,7 +16,7 @@ namespace AG.Collections.Concurrent.Buckets
     {
         private volatile uint _hasValues;
         private Entries _entries = default!;
-        private volatile RefList<T>? _overflow;
+        private volatile UnorderedRefList<T>? _overflow;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public BucketFindResult Find<TState>(in T item, int hash, IEqualityComparer<T> comparer, BucketFindOptions flags, BucketFindAction<TState, T>? action, ref TState? state, out T value)

@@ -86,7 +86,7 @@ namespace AG.Collections.Concurrent
             if (length > Environment.ProcessorCount * 2) return;
 
             Cell[]? newCells;
-            var newLength = Math.Max(3, MathUtils.FindNextPrime(length + 2));
+            var newLength = Math.Max(3, PrimeUtils.FindNext(length + 2));
 
             newCells = new Cell[newLength];
             cells?.CopyTo(newCells, 0);
