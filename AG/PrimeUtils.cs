@@ -12,7 +12,7 @@ namespace AG
         {
             if (number < 0) number = -number;
             if (number is 2 or 3) return true;
-            if (number <= 1 || number % 2 == 0 || number % 3 == 0) return false;
+            if ((number & 1) == 0 || number % 3 == 0) return false;
 
             var limit = (int)Math.Sqrt(number);
             for (var i = 5; i <= limit; i += 6)
@@ -28,7 +28,7 @@ namespace AG
         public static bool IsPrime(uint number)
         {
             if (number is 2 or 3) return true;
-            if (number <= 1 || number % 2 == 0 || number % 3 == 0) return false;
+            if ((number & 1) == 0 || number % 3 == 0) return false;
 
             var limit = (uint)Math.Sqrt(number);
             for (var i = 5; i <= limit; i += 6)
@@ -45,7 +45,7 @@ namespace AG
         {
             if (number < 0) number = -number;
             if (number is 2 or 3) return true;
-            if (number <= 1 || number % 2 == 0 || number % 3 == 0) return false;
+            if ((number & 1) == 0 || number % 3 == 0) return false;
 
             var limit = (long)Math.Sqrt(number);
             for (var i = 5L; i <= limit; i += 6)
@@ -61,7 +61,7 @@ namespace AG
         public static bool IsPrime(ulong number)
         {
             if (number is 2 or 3) return true;
-            if (number <= 1 || number % 2 == 0 || number % 3 == 0) return false;
+            if ((number & 1) == 0 || number % 3 == 0) return false;
 
             var limit = (ulong)Math.Sqrt(number);
             for (var i = 5UL; i <= limit; i += 6)
