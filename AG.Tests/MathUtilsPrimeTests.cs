@@ -127,7 +127,7 @@ namespace AG.Tests
         [Fact] public void LargestPrimeIsPrimeInt() => Assert.True(PrimeUtils.IsPrime(LargestPrimeInt));
         [Fact] public void LargestPrimeIsPrimeUInt() => Assert.True(PrimeUtils.IsPrime(LargestPrimeUInt));
         [Fact] public void LargestPrimeIsPrimeLong() => Assert.True(PrimeUtils.IsPrime(LargestPrimeLong));
-        [Fact] public void LargestPrimeIsPrimeULong() => Assert.True(PrimeUtils.IsPrime(LargestPrimeULong + 1));
+        [Fact] public void LargestPrimeIsPrimeULong() => Assert.True(PrimeUtils.IsPrime(LargestPrimeULong));
 
         [Fact]
         public void OutOfRangePrimesShouldThrowOverflowException()
