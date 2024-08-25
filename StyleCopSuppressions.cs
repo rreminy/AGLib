@@ -27,3 +27,6 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633", Justification = "LICENSE file included.")]
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1636", Justification = "LICENSE file included.")]
+
+// SonarLint
+[assembly: SuppressMessage("Major Code Smell", "S3358", Justification = "Reviewed.")]
