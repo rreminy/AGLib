@@ -11,6 +11,7 @@ namespace AG
         public static bool IsPrime(int number)
         {
             if (number < 0) number = -number;
+            if (number is 1) return false;
             if (number is 2 or 3) return true;
             if ((number & 1) == 0 || number % 3 == 0) return false;
 
@@ -27,6 +28,7 @@ namespace AG
         /// <returns><see langword="true"/> if <paramref name="number"/> is prime; <see langword="false"/> otherwise.</returns>
         public static bool IsPrime(uint number)
         {
+            if (number is 1) return false;
             if (number is 2 or 3) return true;
             if ((number & 1) == 0 || number % 3 == 0) return false;
 
@@ -44,6 +46,7 @@ namespace AG
         public static bool IsPrime(long number)
         {
             if (number < 0) number = -number;
+            if (number is 1) return false;
             if (number is 2 or 3) return true;
             if ((number & 1) == 0 || number % 3 == 0) return false;
 
@@ -60,6 +63,7 @@ namespace AG
         /// <returns><see langword="true"/> if <paramref name="number"/> is prime; <see langword="false"/> otherwise.</returns>
         public static bool IsPrime(ulong number)
         {
+            if (number is 1) return false;
             if (number is 2 or 3) return true;
             if ((number & 1) == 0 || number % 3 == 0) return false;
 
