@@ -28,3 +28,10 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Pack
+      run: nuget pack -o packages
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: packages
+        path: packages/*
