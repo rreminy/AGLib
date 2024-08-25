@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace AG.Collections.Generic
 {
+    /// <content><see cref="IList{T}"/> and <see cref="IReadOnlyList{T}"/> implementation for <see cref="UnorderedRefList{T}"/>.</content>
     public sealed partial class UnorderedRefList<T> : IList<T>, IReadOnlyList<T>
     {
         /// <inheritdoc/>
