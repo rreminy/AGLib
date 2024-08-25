@@ -2,7 +2,7 @@ using System.Collections.Frozen;
 
 namespace AG.Tests
 {
-    public sealed class MathUtilsPrimeTests
+    public sealed class PrimeUtilsTests
     {
         // Found manually using https://www.dcode.fr/primality-test
         private const int LargestPrimeInt = 2147483647;

@@ -11,7 +11,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AG", "AG\AG.csproj", "{DF31
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AG.Tests", "AG.Tests\AG.Tests.csproj", "{E0B50326-767B-46F3-A728-38989A519E68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AG.Collections.Generic", "AG.Collections.Generic\AG.Collections.Generic.csproj", "{E12EC1D0-2884-4AF7-88E5-3091DA2F6F40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AG.Collections.Generic", "AG.Collections.Generic\AG.Collections.Generic.csproj", "{E12EC1D0-2884-4AF7-88E5-3091DA2F6F40}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{60449303-34E9-41B1-9A9E-1F553228E8AD}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+		packages.props = packages.props
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
