@@ -15,12 +15,12 @@ namespace AG.Collections.Concurrent
     // - Additional method that uses a hash value instead of deriving the address of the cellCount variable
     // - Expand cell counts to prime sizes
 
-    /// <summary>A concurrent counter keeping track of its count using concurrent <see cref="Interlocked"/> based counters</summary>
+    /// <summary>A concurrent counter keeping track of its count using concurrent <see cref="Interlocked"/> based counters.</summary>
     public sealed class ConcurrentCounter
     {
         private sealed class Cell
         {
-            [InlineArray(16)] // Cheaty way to get a whole cacheline worth of longs
+            [InlineArray(16)] // Cheaty way to get a whole cacheline worth of longs. Only [7] is used.
             internal struct CellStruct
             {
                 [SuppressMessage("Major Code Smell", "S1144", Justification = "Inline Array")]
@@ -86,7 +86,7 @@ namespace AG.Collections.Concurrent
             if (length > Environment.ProcessorCount * 2) return;
 
             Cell[]? newCells;
-            var newLength = Math.Max(3, MathUtils.FindNextPrime(length + 2));
+            var newLength = Math.Max(3, PrimeUtils.FindNext(length + 2));
 
             newCells = new Cell[newLength];
             cells?.CopyTo(newCells, 0);

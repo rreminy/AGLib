@@ -69,7 +69,7 @@ namespace AG.Collections.Concurrent.Benchmarks.Experimental
                 var sets = this._sets;
                 if (!IsCountTooLarge(count, sets.Length)) return;
 
-                var newLength = MathUtils.FindNextPrime(sets.Length * 2);
+                var newLength = PrimeUtils.FindNext(sets.Length * 2);
                 if (newLength < sets.Length) return;
 
                 lock (sets)
@@ -81,7 +81,7 @@ namespace AG.Collections.Concurrent.Benchmarks.Experimental
                         count = this._count;
                         if (!IsCountTooLarge(count, sets.Length)) return;
 
-                        newLength = MathUtils.FindNextPrime(sets.Length * 2);
+                        newLength = PrimeUtils.FindNext(sets.Length * 2);
                         if (newLength <= sets.Length) return;
                         //Console.WriteLine($"sets resize: {sets.Length} => {newLength}");
 

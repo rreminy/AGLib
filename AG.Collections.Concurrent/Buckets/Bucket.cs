@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using AG.Collections.Concurrent.Internal;
+using AG.Collections.Generic;
 
 namespace AG.Collections.Concurrent.Buckets
 {
@@ -50,7 +50,7 @@ namespace AG.Collections.Concurrent.Buckets
         public static IEnumerator<T> GetBucketEnumerator<T>(IBucket<T> start) where T : notnull
         {
             var stack = new Stack<IBucket<T>>();
-            var list = new RefList<T>(); // used as a buffer
+            var list = new UnorderedRefList<T>(); // used as a buffer
 
             // Lets start with ourselves
             stack.Push(start);
@@ -71,7 +71,7 @@ namespace AG.Collections.Concurrent.Buckets
 
                         // The list effectively becomes a mini-snapshot of the bucket
                         // contents at this point of time.
-                        static void BufferEntries(LeafBucket<T> leafBucket, RefList<T> list)
+                        static void BufferEntries(LeafBucket<T> leafBucket, UnorderedRefList<T> list)
                         {
                             // Enumerator used here is a struct enumerator,
                             // no allocations should happen here.
@@ -83,10 +83,9 @@ namespace AG.Collections.Concurrent.Buckets
                     {
                         // Yield return all the contents of the list buffer then
                         // clear it for re-use at the next leaf bucket we find.
-
-                        // Enumerator used here is a struct enumerator,
-                        // no allocations should happen here.
-                        foreach (var item in list) yield return item;
+                        var count = list.Count;
+                        var array = list.InternalArray;
+                        for (var index = 0; index < count; index++) yield return array[index];
                         list.Clear();
                     }
                 }

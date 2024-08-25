@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>AG.Collections.Concurrent</PackageId>
+    <PackageId>AG.Collections.Generic</PackageId>
     <Version>0.0.1</Version>
     <Authors>Azure Gem</Authors>
   </PropertyGroup>
@@ -30,7 +30,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AG\AG.csproj" />
-    <ProjectReference Include="..\AG.Collections.Generic\AG.Collections.Generic.csproj" />
   </ItemGroup>
 
 </Project>
