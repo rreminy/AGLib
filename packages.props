@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <AssemblyVersion>0.0.0.1</AssemblyVersion>
+
+    <Version>0.0.1-alpha</Version>
+    <Authors>Azure Gem</Authors>
+
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/rreminy/AGLib</PackageProjectUrl>
+
+    <RepositoryUrl>https://github.com/rreminy/AGLib</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>  
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\LICENSE.txt" PackagePath="$(PackageLicenseFile)" />
+    <Content Include="..\README.md" PackagePath="$(PackageReadmeFile)"/>
+  </ItemGroup>
+  
+</Project>
