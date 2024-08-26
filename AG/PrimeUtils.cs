@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 
 namespace AG
 {
@@ -8,6 +9,7 @@ namespace AG
         /// <summary>Determine if a number is prime.</summary>
         /// <param name="number">Number to check.</param>
         /// <returns><see langword="true"/> if <paramref name="number"/> is prime; <see langword="false"/> otherwise.</returns>
+        [Pure]
         public static bool IsPrime(int number)
         {
             if (number < 0) number = -number;
@@ -26,6 +28,7 @@ namespace AG
         /// <summary>Determine if a number is prime.</summary>
         /// <param name="number">Number to check.</param>
         /// <returns><see langword="true"/> if <paramref name="number"/> is prime; <see langword="false"/> otherwise.</returns>
+        [Pure]
         public static bool IsPrime(uint number)
         {
             if (number is 1) return false;
@@ -43,6 +46,7 @@ namespace AG
         /// <summary>Determine if a number is prime.</summary>
         /// <param name="number">Number to check.</param>
         /// <returns><see langword="true"/> if <paramref name="number"/> is prime; <see langword="false"/> otherwise.</returns>
+        [Pure]
         public static bool IsPrime(long number)
         {
             if (number < 0) number = -number;
@@ -61,6 +65,7 @@ namespace AG
         /// <summary>Determine if a number is prime.</summary>
         /// <param name="number">Number to check.</param>
         /// <returns><see langword="true"/> if <paramref name="number"/> is prime; <see langword="false"/> otherwise.</returns>
+        [Pure]
         public static bool IsPrime(ulong number)
         {
             if (number is 1) return false;
@@ -79,6 +84,7 @@ namespace AG
         /// <param name="number">Number to start looking from.</param>
         /// <returns>Next numerical prime.</returns>
         /// <exception cref="OverflowException">Searching overflow.</exception>
+        [Pure]
         public static int FindNext(int number)
         {
             if (number < 0)
@@ -101,6 +107,7 @@ namespace AG
         /// <param name="number">Number to start looking from.</param>
         /// <returns>Next numerical prime.</returns>
         /// <exception cref="OverflowException">Searching overflow.</exception>
+        [Pure]
         public static uint FindNext(uint number)
         {
             if (number is 2 or 3) return number;
@@ -118,6 +125,7 @@ namespace AG
         /// <param name="number">Number to start looking from.</param>
         /// <returns>Next numerical prime.</returns>
         /// <exception cref="OverflowException">Searching overflow.</exception>
+        [Pure]
         public static long FindNext(long number)
         {
             if (number < 0)
@@ -140,6 +148,7 @@ namespace AG
         /// <param name="number">Number to start looking from.</param>
         /// <returns>Next numerical prime.</returns>
         /// <exception cref="OverflowException">Searching overflow.</exception>
+        [Pure]
         public static ulong FindNext(ulong number)
         {
             if (number is 2 or 3) return number;
