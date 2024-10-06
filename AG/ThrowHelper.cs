@@ -12,12 +12,14 @@ namespace AG
         /// <typeparam name="T"><see cref="Exception"/>type to throw.</typeparam>
         /// <exception cref="Exception"><see cref="Exception"/> thrown.</exception>
         [DoesNotReturn]
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void Throw<T>() where T : Exception, new() => throw new T();
 
         /// <summary>Throws a specified <paramref name="exception"/>.</summary>
         /// <param name="exception"><see cref="Exception"/> to throw.</param>
         /// <exception cref="Exception"><see cref="Exception"/> thrown.</exception>
         [DoesNotReturn]
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void Throw(Exception exception) => throw exception;
 
         /// <summary>Throws an exception of type <typeparamref name="T"/> if <paramref name="condition"/> is <see langword="true"/>.</summary>

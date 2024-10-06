@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace AG
 {
-    /// <summary>64-bit Hash generators based on SplitMix64.</summary>
-    /// <remarks>Adapted from: <c>https://xoshiro.di.unimi.it/splitmix64.c</c>.</remarks>
-    public static class SplitHash64
+    /// <summary>32-bit Hash generators based on SplitMix32.</summary>
+    /// <remarks>Adapted from: <c>https://github.com/umireon/my-random-stuff/blob/master/xorshift/splitmix32.c</c>.</remarks>
+    public static class SplitHash32
     {
         #region Primitive Types
         /// <summary>Compute the hash of <paramref name="x"/>.</summary>
@@ -20,12 +20,12 @@ namespace AG
         /// <returns>Hash of <paramref name="x"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static long Compute(ulong x) // This is the main method
+        public static int Compute(uint x) // This is the main method
         {
-            x += 0x9e3779b97f4a7c15U;
-            x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9U;
-            x = (x ^ (x >> 27)) * 0x94d049bb133111ebU;
-            return (long)(x ^ (x >> 31));
+            x += 0x9e3779b9u;
+            x = (x ^ (x >> 16)) * 0x85ebca6bu;
+            x = (x ^ (x >> 13)) * 0xc2b2ae35u;
+            return (int)(x ^ (x >> 16));
         }
 
         /// <summary>Compute the hash of <paramref name="x"/>.</summary>
@@ -33,49 +33,84 @@ namespace AG
         /// <returns>Hash of <paramref name="x"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static long Compute(long x) => Compute((ulong)x);
+        public static int Compute(int x) => Compute((uint)x);
 
         /// <summary>Compute the hash of <paramref name="x"/>.</summary>
         /// <param name="x">Value to compute hash from.</param>
         /// <returns>Hash of <paramref name="x"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static long Compute(uint x) => Compute((ulong)x);
+        public static int Compute(ulong x) => Compute((uint)x) ^ Compute((uint)(x >> 32));
 
         /// <summary>Compute the hash of <paramref name="x"/>.</summary>
         /// <param name="x">Value to compute hash from.</param>
         /// <returns>Hash of <paramref name="x"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static long Compute(int x) => Compute((ulong)x);
+        public static int Compute(long x) => Compute((ulong)x);
 
         /// <summary>Compute the hash of <paramref name="x"/>.</summary>
         /// <param name="x">Value to compute hash from.</param>
         /// <returns>Hash of <paramref name="x"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static long Compute(ushort x) => Compute((ulong)x);
+        public static int Compute(ushort x) => Compute((uint)x);
 
         /// <summary>Compute the hash of <paramref name="x"/>.</summary>
         /// <param name="x">Value to compute hash from.</param>
         /// <returns>Hash of <paramref name="x"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static long Compute(short x) => Compute((ulong)x);
+        public static int Compute(short x) => Compute((uint)x);
 
         /// <summary>Compute the hash of <paramref name="x"/>.</summary>
         /// <param name="x">Value to compute hash from.</param>
         /// <returns>Hash of <paramref name="x"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static long Compute(byte x) => Compute((ulong)x);
+        public static int Compute(byte x) => Compute((uint)x);
 
         /// <summary>Compute the hash of <paramref name="x"/>.</summary>
         /// <param name="x">Value to compute hash from.</param>
         /// <returns>Hash of <paramref name="x"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static long Compute(sbyte x) => Compute((ulong)x);
+        public static int Compute(sbyte x) => Compute((uint)x);
+
+        /// <summary>Compute the hash of <paramref name="x"/>.</summary>
+        /// <param name="x">Value to compute hash from.</param>
+        /// <returns>Hash of <paramref name="x"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
+        public static int Compute(float x) => Compute(Unsafe.BitCast<float, uint>(x));
+
+        /// <summary>Compute the hash of <paramref name="x"/>.</summary>
+        /// <param name="x">Value to compute hash from.</param>
+        /// <returns>Hash of <paramref name="x"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
+        public static int Compute(double x) => Compute(Unsafe.BitCast<double, ulong>(x));
+
+        /// <summary>Compute the hash of <paramref name="x"/>.</summary>
+        /// <param name="x">Value to compute hash from.</param>
+        /// <returns>Hash of <paramref name="x"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
+        public static int Compute(Half x) => Compute(Unsafe.BitCast<Half, ushort>(x));
+
+        /// <summary>Compute the hash of <paramref name="x"/>.</summary>
+        /// <param name="x">Value to compute hash from.</param>
+        /// <returns>Hash of <paramref name="x"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
+        public static int Compute(UInt128 x) => Compute((ulong)x) ^ Compute((ulong)(x >> 64));
+
+        /// <summary>Compute the hash of <paramref name="x"/>.</summary>
+        /// <param name="x">Value to compute hash from.</param>
+        /// <returns>Hash of <paramref name="x"/>.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Pure]
+        public static int Compute(Int128 x) => Compute((UInt128)x);
 
         /// <summary>Compute the hash of <paramref name="x"/>.</summary>
         /// <param name="x">Value to compute hash from.</param>
@@ -90,41 +125,6 @@ namespace AG
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
         public static long Compute(nint x) => Compute(MemoryMarshal.CreateReadOnlySpan(ref x, 1));
-
-        /// <summary>Compute the hash of <paramref name="x"/>.</summary>
-        /// <param name="x">Value to compute hash from.</param>
-        /// <returns>Hash of <paramref name="x"/>.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [Pure]
-        public static unsafe long Compute(double x) => Compute(Unsafe.BitCast<double, ulong>(x)); // Compute(*(ulong*)&x); // Of course, some ugly trickery had to happen here
-
-        /// <summary>Compute the hash of <paramref name="x"/>.</summary>
-        /// <param name="x">Value to compute hash from.</param>
-        /// <returns>Hash of <paramref name="x"/>.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [Pure]
-        public static unsafe long Compute(float x) => Compute(Unsafe.BitCast<float, uint>(x)); // Compute(*(uint*)&x); // Don't ask Lousy Gem... All this stuff is pretty safe, okay?
-
-        /// <summary>Compute the hash of <paramref name="x"/>.</summary>
-        /// <param name="x">Value to compute hash from.</param>
-        /// <returns>Hash of <paramref name="x"/>.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [Pure]
-        public static unsafe long Compute(Half x) => Compute(Unsafe.BitCast<Half, ushort>(x)); // Compute(*(ushort*)&x); // Its 100% safe!
-
-        /// <summary>Compute the hash of <paramref name="x"/>.</summary>
-        /// <param name="x">Value to compute hash from.</param>
-        /// <returns>Hash of <paramref name="x"/>.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [Pure]
-        public static long Compute(UInt128 x) => Compute((ulong)x) ^ Compute((ulong)(x >> 64));
-
-        /// <summary>Compute the hash of <paramref name="x"/>.</summary>
-        /// <param name="x">Value to compute hash from.</param>
-        /// <returns>Hash of <paramref name="x"/>.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [Pure]
-        public static long Compute(Int128 x) => Compute((UInt128)x);
         #endregion
 
         #region Arrays, strings and bytes
@@ -133,7 +133,7 @@ namespace AG
         /// <param name="x">Value to compute hash from.</param>
         /// <returns>Hash of <paramref name="x"/>.</returns>
         [Pure]
-        public static unsafe long Compute(BigInteger x)
+        public static unsafe int Compute(BigInteger x)
         {
             var bytes = x.ToByteArray();
             fixed (byte* ptr = bytes)
@@ -147,15 +147,10 @@ namespace AG
         /// <param name="length">Array length.</param>
         /// <returns>Hash result.</returns>
         [Pure]
-        public static unsafe long Compute(byte* start, ulong length)
+        public static unsafe int Compute(byte* start, ulong length)
         {
             var hash = Compute(length);
-            while (length >= 8)
-            {
-                hash ^= Compute(*(ulong*)start);
-                start += 8; length -= 8;
-            }
-            if (length >= 4)
+            while (length >= 4)
             {
                 hash ^= Compute(*(uint*)start);
                 start += 4; length -= 4;
@@ -178,7 +173,7 @@ namespace AG
         /// <returns>Hash result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static unsafe long Compute(byte* start, byte* end)
+        public static unsafe int Compute(byte* start, byte* end)
         {
             var length = (ulong)(end - start);
             return Compute(start, length);
@@ -191,7 +186,7 @@ namespace AG
         /// <returns>Hash result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static unsafe long Compute<T>(T* start, T* end) where T : unmanaged
+        public static unsafe int Compute<T>(T* start, T* end) where T : unmanaged
         {
             var count = (ulong)(end - start);
             return Compute(start, count);
@@ -203,7 +198,7 @@ namespace AG
         /// <param name="span"><see cref="ReadOnlySpan{T}"/> to compute hash from.</param>
         /// <returns>Hash result.</returns>
         [Pure]
-        public static unsafe long Compute<T>(ReadOnlySpan<T> span) where T : unmanaged
+        public static unsafe int Compute<T>(ReadOnlySpan<T> span) where T : unmanaged
         {
             fixed (T* ptr = span)
             {
@@ -218,7 +213,7 @@ namespace AG
         /// <returns>Hash result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static unsafe long Compute<T>(ReadOnlyMemory<T> memory) where T : unmanaged
+        public static unsafe int Compute<T>(ReadOnlyMemory<T> memory) where T : unmanaged
         {
             return Compute(memory.Span);
         }
@@ -230,7 +225,7 @@ namespace AG
         /// <returns>Hash result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [Pure]
-        public static unsafe long Compute<T>(T* start, ulong count) where T : unmanaged
+        public static unsafe int Compute<T>(T* start, ulong count) where T : unmanaged
         {
             return Compute((byte*)start, (ulong)sizeof(T) * count);
         }
@@ -240,24 +235,13 @@ namespace AG
         /// <param name="str"><see cref="string"/> to compute hash from.</param>
         /// <returns>Hash of <paramref name="str"/>.</returns>
         [Pure]
-        public static unsafe long Compute(string str)
+        public static unsafe int Compute(string str)
         {
             fixed (char* ptr = str)
             {
                 return Compute(ptr, (ulong)str.Length);
             }
         }
-        #endregion
-
-        #region Utility Methods
-        /// <summary>Mixes <paramref name="hash"/>'s low and high bits.</summary>
-        /// <remarks>This simply xor the low and high bits of <paramref name="hash"/>.</remarks>
-        /// <param name="hash">Hash to convert.</param>
-        /// <returns>Result hash.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [Pure]
-        [Obsolete($"Use {nameof(BitUtils)}.{nameof(BitUtils.Fold)} instead.")]
-        public static unsafe int ConvertTo32Bit(long hash) => (int)BitUtils.Fold((ulong)hash);
         #endregion
     }
 }

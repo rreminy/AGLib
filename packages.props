@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
-    <AssemblyVersion>0.0.0.2</AssemblyVersion>
+    <AssemblyVersion>0.0.0.3</AssemblyVersion>
 
-    <Version>0.0.2-alpha</Version>
+    <Version>0.0.3-alpha</Version>
     <Authors>Azure Gem</Authors>
 
     <PackageReadmeFile>README.md</PackageReadmeFile>
