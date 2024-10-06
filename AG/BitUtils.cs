@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
@@ -134,5 +135,33 @@ namespace AG
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int FindNextBitSet(ulong bits, int startIndex) => BitOperations.TrailingZeroCount(unchecked(bits & ~((0x1uL << startIndex) - 1)));
+
+        /// <summary>Folds the lower and higher bit halves of <paramref name="value"/> into another value with half the bit width by xor'ing them.</summary>
+        /// <param name="value">Value to fold.</param>
+        /// <returns>Folded value.</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong Fold(UInt128 value) => (ulong)value ^ (ulong)(value >> 64);
+
+        /// <summary>Folds the lower and higher bit halves of <paramref name="value"/> into another value with half the bit width by xor'ing them.</summary>
+        /// <param name="value">Value to fold.</param>
+        /// <returns>Folded value.</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint Fold(ulong value) => (uint)value ^ (uint)(value >> 32);
+
+        /// <summary>Folds the lower and higher bit halves of <paramref name="value"/> into another value with half the bit width by xor'ing them.</summary>
+        /// <param name="value">Value to fold.</param>
+        /// <returns>Folded value.</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ushort Fold(uint value) => (ushort)((ushort)value ^ (ushort)(value >> 16));
+
+        /// <summary>Folds the lower and higher bit halves of <paramref name="value"/> into another value with half the bit width by xor'ing them.</summary>
+        /// <param name="value">Value to fold.</param>
+        /// <returns>Folded value.</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte Fold(ushort value) => (byte)((byte)value ^ (byte)(value >> 8));
     }
 }
