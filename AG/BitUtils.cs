@@ -148,7 +148,21 @@ namespace AG
         /// <returns>Folded value.</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static long Fold(Int128 value) => (long)Fold((UInt128)value);
+
+        /// <summary>Folds the lower and higher bit halves of <paramref name="value"/> into another value with half the bit width by xor'ing them.</summary>
+        /// <param name="value">Value to fold.</param>
+        /// <returns>Folded value.</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Fold(ulong value) => (uint)value ^ (uint)(value >> 32);
+
+        /// <summary>Folds the lower and higher bit halves of <paramref name="value"/> into another value with half the bit width by xor'ing them.</summary>
+        /// <param name="value">Value to fold.</param>
+        /// <returns>Folded value.</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Fold(long value) => (int)Fold((ulong)value);
 
         /// <summary>Folds the lower and higher bit halves of <paramref name="value"/> into another value with half the bit width by xor'ing them.</summary>
         /// <param name="value">Value to fold.</param>
@@ -162,6 +176,20 @@ namespace AG
         /// <returns>Folded value.</returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static short Fold(int value) => (short)Fold((uint)value);
+
+        /// <summary>Folds the lower and higher bit halves of <paramref name="value"/> into another value with half the bit width by xor'ing them.</summary>
+        /// <param name="value">Value to fold.</param>
+        /// <returns>Folded value.</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte Fold(ushort value) => (byte)((byte)value ^ (byte)(value >> 8));
+
+        /// <summary>Folds the lower and higher bit halves of <paramref name="value"/> into another value with half the bit width by xor'ing them.</summary>
+        /// <param name="value">Value to fold.</param>
+        /// <returns>Folded value.</returns>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static sbyte Fold(short value) => (sbyte)Fold((ushort)value);
     }
 }
