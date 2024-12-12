@@ -69,7 +69,7 @@ namespace AG.Cursed.Tests
                 lock (manualString!)
                 {
                     Assert.Equal(hash, manualString.GetHashCode()); // NOTE: This is calling string.GetHashCode() and not object.GetHashCode() due to virtual override
-                    Assert.Equal(typeof(string), manualString.GetType()); // MethodTable doubles as a type identifier!
+                    Assert.IsType<string>(manualString); // MethodTable doubles as a type identifier!
                     Assert.Equal(str, manualString); // NOTE: manualString is a copy
                     Thread.Sleep(100);
                 }
@@ -85,7 +85,7 @@ namespace AG.Cursed.Tests
                 {
                     Thread.Sleep(100);
                     Assert.Equal(hash, manualString.GetHashCode()); // NOTE: This is calling string.GetHashCode() and not object.GetHashCode() due to virtual override
-                    Assert.Equal(typeof(string), manualString.GetType()); // MethodTable doubles as a type identifier!
+                    Assert.IsType<string>(manualString); // MethodTable doubles as a type identifier!
                     Assert.Equal(str, manualString); // NOTE: manualString is a copy
                 }
             }
@@ -107,7 +107,8 @@ namespace AG.Cursed.Tests
 
         private static void DangerouslyManuallyCreatedString_LockingThread(object obj, ref bool exit)
         {
-            if (Debugger.IsAttached && obj is not string) Debugger.Break(); // To be manually caught
+            Assert.IsType<string>(obj);
+
             try
             {
                 while (true)
@@ -126,8 +127,7 @@ namespace AG.Cursed.Tests
             }
             catch (Exception ex) // To be manually inspected
             {
-                if (Debugger.IsAttached) Debugger.Break();
-                GC.KeepAlive(ex);
+                Assert.Fail(ex.ToString());
             }
         }
 

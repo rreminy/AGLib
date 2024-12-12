@@ -21,8 +21,15 @@ namespace AG.Cursed.Tests
 
         public static TheoryData<string> StringsAsData(string fieldName)
         {
-            var strings = typeof(CursedStringUtilsTests).GetField(fieldName, System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic)!
-                .GetValue(null) as string[];
+            var fieldInfo = typeof(CursedStringUtilsTests).GetField(fieldName, System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+            Assert.NotNull(fieldInfo);
+
+            var obj = fieldInfo.GetValue(null);
+            Assert.IsType<string[]>(obj);
+
+            var strings = obj as string[];
+            Assert.NotNull(strings);
+
             return new TheoryData<string>(strings);
         }
 
@@ -55,22 +62,24 @@ namespace AG.Cursed.Tests
             var success = CursedStringUtils.TryGetStringFromSpan(span, out var result);
 
             Assert.True(success);
-            Assert.Equal(str, result);
+            Assert.Same(str, result);
         }
 
         [Theory]
         [MemberData(nameof(AllSpansAsData), nameof(s_shortStrings))]
         [MemberData(nameof(AllAlignedSpansAsData), nameof(s_longStrings))]
-        public static void SpanTest(string str, int start, int end, bool expectedSuccess)
+        public static void SpanTest(string expectedString, int start, int end, bool expectedSuccess)
         {
-            var span = str.AsSpan()[start..end];
+            var span = expectedString.AsSpan()[start..end];
             var success = CursedStringUtils.TryGetStringFromSpan(span, out var result);
 
-            Assert.True(success == expectedSuccess);
+            if (expectedSuccess) Assert.True(success);
+            else Assert.False(success);
+
             if (success)
             {
-                if (span.Length == 0) Assert.Empty(result!);
-                else Assert.Equal(str, result);
+                if (span.Length == 0) Assert.Same(string.Empty, result);
+                else Assert.Same(expectedString, result);
             }
             else
             {

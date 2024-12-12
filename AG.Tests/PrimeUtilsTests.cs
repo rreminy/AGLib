@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Xunit;
 
@@ -15,72 +16,109 @@ namespace AG.Tests
         private const ulong LargestPrimeULong = 18446744073709551557uL;
 
         // Primes from 1 to 1000
-        private static readonly uint[] s_primes = [
-            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97,
-            101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199,
-            211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293,
-            307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397,
-            401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499,
-            503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599,
-            601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691,
-            701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797,
-            809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887,
-            907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997
-        ];
-        private static readonly IReadOnlyCollection<uint> s_primesCollection = s_primes.ToFrozenSet();
+        private static readonly uint[] s_primes;
+        private static readonly FrozenSet<uint> s_primesCollection;
+
+
+        static PrimeUtilsTests()
+        {
+            var capacity = 100000;
+            var bits = new bool[capacity];
+            bits[0] = bits[1] = true;
+
+            var primes = new List<uint>();
+            for (var number = 2u; number < capacity; number++)
+            {
+                ref var bit = ref bits[number];
+                if (bit) continue;
+                bit = true;
+
+                primes.Add(number);
+                for (var index = number * 2; index < capacity; index += number)
+                {
+                    bits[index] = true;
+                }
+            }
+
+            var primesArray = primes.ToArray();
+            var primesSet = primesArray.ToFrozenSet();
+
+            // Assert: primesArray is sorted
+
+            s_primes = primesArray;
+            s_primesCollection = primesSet;
+        }
 
 
         [Fact]
         public void IsPrimeInt()
         {
-            for (var value = 0; value < 1000; value++)
+            var maxValue = (int)s_primes.Max();
+            for (var value = 0; value < maxValue; value++)
             {
-                Assert.True(PrimeUtils.IsPrime(value) == s_primesCollection.Contains((uint)value), $"{value}: {PrimeUtils.IsPrime(value)} != {s_primesCollection.Contains((uint)value)}");
+                var expected = s_primesCollection.Contains((uint)value);
+                if (expected) Assert.True(PrimeUtils.IsPrime(value));
+                else Assert.False(PrimeUtils.IsPrime(value));
             }
         }
 
         [Fact]
         public void IsPrimeNegativeInt()
         {
-            for (var value = 0; value < 1000; value++)
+            var maxValue = (int)s_primes.Max();
+            for (var value = 0; value < maxValue; value++)
             {
-                Assert.True(PrimeUtils.IsPrime(-value) == s_primesCollection.Contains((uint)value), $"{value}: {PrimeUtils.IsPrime(value)} != {s_primesCollection.Contains((uint)value)}");
+                var expected = s_primesCollection.Contains((uint)value);
+                if (expected) Assert.True(PrimeUtils.IsPrime(-value));
+                else Assert.False(PrimeUtils.IsPrime(value));
             }
         }
 
         [Fact]
         public void IsPrimeUInt()
         {
-            for (var value = 0u; value < 1000; value++)
+            var maxValue = s_primes.Max();
+            for (var value = 0u; value < maxValue; value++)
             {
-                Assert.True(PrimeUtils.IsPrime(value) == s_primesCollection.Contains(value), $"{value}: {PrimeUtils.IsPrime(value)} != {s_primesCollection.Contains(value)}");
+                var expected = s_primesCollection.Contains(value);
+                if (expected) Assert.True(PrimeUtils.IsPrime(value));
+                else Assert.False(PrimeUtils.IsPrime(value));
             }
         }
 
         [Fact]
         public void IsPrimeLong()
         {
-            for (var value = 0L; value < 1000; value++)
+            var maxValue = (long)s_primes.Max();
+            for (var value = 0L; value < maxValue; value++)
             {
-                Assert.True(PrimeUtils.IsPrime(value) == s_primesCollection.Contains((uint)value), $"{value}: {PrimeUtils.IsPrime(value)} != {s_primesCollection.Contains((uint)value)}");
+                var expected = s_primesCollection.Contains((uint)value);
+                if (expected) Assert.True(PrimeUtils.IsPrime(value));
+                else Assert.False(PrimeUtils.IsPrime(value));
             }
         }
 
         [Fact]
         public void IsPrimeNegativeLong()
         {
-            for (var value = 0L; value < 1000; value++)
+            var maxValue = (long)s_primes.Max();
+            for (var value = 0L; value < maxValue; value++)
             {
-                Assert.True(PrimeUtils.IsPrime(-value) == s_primesCollection.Contains((uint)value), $"{value}: {PrimeUtils.IsPrime(value)} != {s_primesCollection.Contains((uint)value)}");
+                var expected = s_primesCollection.Contains((uint)value);
+                if (expected) Assert.True(PrimeUtils.IsPrime(-value));
+                else Assert.False(PrimeUtils.IsPrime(value));
             }
         }
 
         [Fact]
         public void IsPrimeULong()
         {
-            for (var value = 0uL; value < 1000; value++)
+            var maxValue = (ulong)s_primes.Max();
+            for (var value = 0uL; value < maxValue; value++)
             {
-                Assert.True(PrimeUtils.IsPrime(value) == s_primesCollection.Contains((uint)value), $"{value}: {PrimeUtils.IsPrime(value)} != {s_primesCollection.Contains((uint)value)}");
+                var expected = s_primesCollection.Contains((uint)value);
+                if (expected) Assert.True(PrimeUtils.IsPrime(value));
+                else Assert.False(PrimeUtils.IsPrime(value));
             }
         }
 
@@ -88,10 +126,12 @@ namespace AG.Tests
         public void FindNextPrimeInt()
         {
             var maxValue = (int)s_primes.Max();
+            var queue = new Queue<uint>(s_primes);
+            var nextValue = (int)queue.Dequeue();
             for (var value = 0; value <= maxValue; value++)
             {
-                var expected = (int)s_primes.Where(prime => prime >= value).Min();
-                Assert.Equal(expected, PrimeUtils.FindNext(value));
+                if (value > nextValue) nextValue = (int)queue.Dequeue();
+                Assert.Equal(nextValue, PrimeUtils.FindNext(value));
             }
         }
 
@@ -99,10 +139,12 @@ namespace AG.Tests
         public void FindNextPrimeUInt()
         {
             var maxValue = (uint)s_primes.Max();
+            var queue = new Queue<uint>(s_primes);
+            var nextValue = (uint)queue.Dequeue();
             for (var value = 0u; value <= maxValue; value++)
             {
-                var expected = (uint)s_primes.Where(prime => prime >= value).Min();
-                Assert.Equal(expected, PrimeUtils.FindNext(value));
+                if (value > nextValue) nextValue = (uint)queue.Dequeue();
+                Assert.Equal(nextValue, PrimeUtils.FindNext(value));
             }
         }
 
@@ -110,10 +152,12 @@ namespace AG.Tests
         public void FindNextPrimeLong()
         {
             var maxValue = (long)s_primes.Max();
+            var queue = new Queue<uint>(s_primes);
+            var nextValue = (long)queue.Dequeue();
             for (var value = 0L; value <= maxValue; value++)
             {
-                var expected = (long)s_primes.Where(prime => prime >= value).Min();
-                Assert.Equal(expected, PrimeUtils.FindNext(value));
+                if (value > nextValue) nextValue = (long)queue.Dequeue();
+                Assert.Equal(nextValue, PrimeUtils.FindNext(value));
             }
         }
 
@@ -121,10 +165,12 @@ namespace AG.Tests
         public void FindNextPrimeULong()
         {
             var maxValue = (ulong)s_primes.Max();
+            var queue = new Queue<uint>(s_primes);
+            var nextValue = (ulong)queue.Dequeue();
             for (var value = 0uL; value <= maxValue; value++)
             {
-                var expected = (ulong)s_primes.Where(prime => prime >= value).Min();
-                Assert.Equal(expected, PrimeUtils.FindNext(value));
+                if (value > nextValue) nextValue = (ulong)queue.Dequeue();
+                Assert.Equal(nextValue, PrimeUtils.FindNext(value));
             }
         }
 
@@ -136,7 +182,7 @@ namespace AG.Tests
         [Fact]
         public void OutOfRangePrimesShouldThrowOverflowException()
         {
-            //Assert.Throws<OverflowException>(() => MathUtils.FindNextPrime(LargestPrimeInt + 1)); // LargestPrimeInt is already the largest (int.MaxValue)
+            //Assert.Throws<OverflowException>(() => MathUtils.FindNextPrime(LargestPrimeInt + 1)); // LargestPrimeInt is already the largest int (int.MaxValue)
             Assert.Throws<OverflowException>(() => PrimeUtils.FindNext(LargestPrimeUInt + 1));
             Assert.Throws<OverflowException>(() => PrimeUtils.FindNext(LargestPrimeLong + 1));
             Assert.Throws<OverflowException>(() => PrimeUtils.FindNext(LargestPrimeULong + 1));

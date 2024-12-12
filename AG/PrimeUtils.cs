@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Numerics;
 
 namespace AG
 {
@@ -14,13 +17,13 @@ namespace AG
         {
             if (number < 0) number = -number;
             if (number is 1) return false;
-            if (number is 2 or 3) return true;
-            if ((number & 1) == 0 || number % 3 == 0) return false;
+            if (number is 2 or 3 or 5 or 7 or 11 or 13 or 17 or 19 or 23 or 29) return true;
+            if ((number & 1) == 0 || number % 3 == 0 || number % 5 == 0 || number % 7 == 0 || number % 11 == 0 || number % 13 == 0 || number % 17 == 0 || number % 19 == 0 || number % 23 == 0 || number % 29 == 0) return false;
 
             var limit = (int)Math.Sqrt(number);
-            for (var i = 5; i <= limit; i += 6)
+            for (var i = 31; i <= limit; i += 30)
             {
-                if (number % i == 0 || number % (i + 2) == 0) return false;
+                if (number % i == 0 || number % (i + 6) == 0 || number % (i + 10) == 0 || number % (i + 12) == 0 || number % (i + 16) == 0 || number % (i + 18) == 0 || number % (i + 22) == 0 || number % (i + 28) == 0) return false;
             }
             return true;
         }
@@ -32,13 +35,13 @@ namespace AG
         public static bool IsPrime(uint number)
         {
             if (number is 1) return false;
-            if (number is 2 or 3) return true;
-            if ((number & 1) == 0 || number % 3 == 0) return false;
+            if (number is 2 or 3 or 5 or 7 or 11 or 13 or 17 or 19 or 23 or 29) return true;
+            if ((number & 1) == 0 || number % 3 == 0 || number % 5 == 0 || number % 7 == 0 || number % 11 == 0 || number % 13 == 0 || number % 17 == 0 || number % 19 == 0 || number % 23 == 0 || number % 29 == 0) return false;
 
             var limit = (uint)Math.Sqrt(number);
-            for (var i = 5; i <= limit; i += 6)
+            for (var i = 30u; i <= limit; i += 30)
             {
-                if (number % i == 0 || number % (i + 2) == 0) return false;
+                if (number % (i + 1) == 0 || number % (i + 7) == 0 || number % (i + 11) == 0 || number % (i + 13) == 0 || number % (i + 17) == 0 || number % (i + 19) == 0 || number % (i + 23) == 0 || number % (i + 29) == 0) return false;
             }
             return true;
         }
@@ -51,13 +54,13 @@ namespace AG
         {
             if (number < 0) number = -number;
             if (number is 1) return false;
-            if (number is 2 or 3) return true;
-            if ((number & 1) == 0 || number % 3 == 0) return false;
+            if (number is 2 or 3 or 5 or 7 or 11 or 13 or 17 or 19 or 23 or 29) return true;
+            if ((number & 1) == 0 || number % 3 == 0 || number % 5 == 0 || number % 7 == 0 || number % 11 == 0 || number % 13 == 0 || number % 17 == 0 || number % 19 == 0 || number % 23 == 0 || number % 29 == 0) return false;
 
             var limit = (long)Math.Sqrt(number);
-            for (var i = 5L; i <= limit; i += 6)
+            for (var i = 31L; i <= limit; i += 30)
             {
-                if (number % i == 0 || number % (i + 2) == 0) return false;
+                if (number % i == 0 || number % (i + 6) == 0 || number % (i + 10) == 0 || number % (i + 12) == 0 || number % (i + 16) == 0 || number % (i + 18) == 0 || number % (i + 22) == 0 || number % (i + 28) == 0) return false;
             }
             return true;
         }
@@ -69,13 +72,13 @@ namespace AG
         public static bool IsPrime(ulong number)
         {
             if (number is 1) return false;
-            if (number is 2 or 3) return true;
-            if ((number & 1) == 0 || number % 3 == 0) return false;
+            if (number is 2 or 3 or 5 or 7 or 11 or 13 or 17 or 19 or 23 or 29) return true;
+            if ((number & 1) == 0 || number % 3 == 0 || number % 5 == 0 || number % 7 == 0 || number % 11 == 0 || number % 13 == 0 || number % 17 == 0 || number % 19 == 0 || number % 23 == 0 || number % 29 == 0) return false;
 
             var limit = (ulong)Math.Sqrt(number);
-            for (var i = 5UL; i <= limit; i += 6)
+            for (var i = 31UL; i <= limit; i += 30)
             {
-                if (number % i == 0 || number % (i + 2) == 0) return false;
+                if (number % i == 0 || number % (i + 6) == 0 || number % (i + 10) == 0 || number % (i + 12) == 0 || number % (i + 16) == 0 || number % (i + 18) == 0 || number % (i + 22) == 0 || number % (i + 28) == 0) return false;
             }
             return true;
         }
