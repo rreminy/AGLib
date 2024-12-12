@@ -19,12 +19,14 @@ namespace AG.Tests
         private static readonly uint[] s_primes;
         private static readonly FrozenSet<uint> s_primesCollection;
 
-
         static PrimeUtilsTests()
         {
             var capacity = 100000;
             var bits = new bool[capacity];
             bits[0] = bits[1] = true;
+
+            // Generate primes for testing using Sieve of Eratosthenes
+            // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 
             var primes = new List<uint>();
             for (var number = 2u; number < capacity; number++)
