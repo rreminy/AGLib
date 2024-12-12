@@ -56,9 +56,9 @@ namespace AG.Tests
             var maxValue = (int)s_primes.Max();
             for (var value = 0; value < maxValue; value++)
             {
-                var expected = s_primesCollection.Contains((uint)value);
-                if (expected) Assert.True(PrimeUtils.IsPrime(value));
-                else Assert.False(PrimeUtils.IsPrime(value));
+                var isPrime = PrimeUtils.IsPrime(value);
+                if (isPrime) Assert.Contains((uint)value, (IReadOnlySet<uint>)s_primesCollection);
+                else Assert.DoesNotContain((uint)value, (IReadOnlySet<uint>)s_primesCollection);
             }
         }
 
@@ -68,9 +68,9 @@ namespace AG.Tests
             var maxValue = (int)s_primes.Max();
             for (var value = 0; value < maxValue; value++)
             {
-                var expected = s_primesCollection.Contains((uint)value);
-                if (expected) Assert.True(PrimeUtils.IsPrime(-value));
-                else Assert.False(PrimeUtils.IsPrime(value));
+                var isPrime = PrimeUtils.IsPrime(-value);
+                if (isPrime) Assert.Contains((uint)value, (IReadOnlySet<uint>)s_primesCollection);
+                else Assert.DoesNotContain((uint)value, (IReadOnlySet<uint>)s_primesCollection);
             }
         }
 
@@ -80,9 +80,9 @@ namespace AG.Tests
             var maxValue = s_primes.Max();
             for (var value = 0u; value < maxValue; value++)
             {
-                var expected = s_primesCollection.Contains(value);
-                if (expected) Assert.True(PrimeUtils.IsPrime(value));
-                else Assert.False(PrimeUtils.IsPrime(value));
+                var isPrime = PrimeUtils.IsPrime(value);
+                if (isPrime) Assert.Contains(value, (IReadOnlySet<uint>)s_primesCollection);
+                else Assert.DoesNotContain(value, (IReadOnlySet<uint>)s_primesCollection);
             }
         }
 
@@ -92,9 +92,9 @@ namespace AG.Tests
             var maxValue = (long)s_primes.Max();
             for (var value = 0L; value < maxValue; value++)
             {
-                var expected = s_primesCollection.Contains((uint)value);
-                if (expected) Assert.True(PrimeUtils.IsPrime(value));
-                else Assert.False(PrimeUtils.IsPrime(value));
+                var isPrime = PrimeUtils.IsPrime(value);
+                if (isPrime) Assert.Contains((uint)value, (IReadOnlySet<uint>)s_primesCollection);
+                else Assert.DoesNotContain((uint)value, (IReadOnlySet<uint>)s_primesCollection);
             }
         }
 
@@ -104,9 +104,9 @@ namespace AG.Tests
             var maxValue = (long)s_primes.Max();
             for (var value = 0L; value < maxValue; value++)
             {
-                var expected = s_primesCollection.Contains((uint)value);
-                if (expected) Assert.True(PrimeUtils.IsPrime(-value));
-                else Assert.False(PrimeUtils.IsPrime(value));
+                var isPrime = PrimeUtils.IsPrime(-value);
+                if (isPrime) Assert.Contains((uint)value, (IReadOnlySet<uint>)s_primesCollection);
+                else Assert.DoesNotContain((uint)value, (IReadOnlySet<uint>)s_primesCollection);
             }
         }
 
@@ -116,9 +116,9 @@ namespace AG.Tests
             var maxValue = (ulong)s_primes.Max();
             for (var value = 0uL; value < maxValue; value++)
             {
-                var expected = s_primesCollection.Contains((uint)value);
-                if (expected) Assert.True(PrimeUtils.IsPrime(value));
-                else Assert.False(PrimeUtils.IsPrime(value));
+                var isPrime = PrimeUtils.IsPrime(value);
+                if (isPrime) Assert.Contains((uint)value, (IReadOnlySet<uint>)s_primesCollection);
+                else Assert.DoesNotContain((uint)value, (IReadOnlySet<uint>)s_primesCollection);
             }
         }
 
