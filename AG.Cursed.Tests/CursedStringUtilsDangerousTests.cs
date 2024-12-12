@@ -118,11 +118,9 @@ namespace AG.Cursed.Tests
                     {
                         AggressiveGC();
                         Thread.Sleep(100);
-
-                        Monitor.Exit(obj);
-                        Thread.Sleep(10);
-                        AggressiveGC();
                     }
+                    Thread.Sleep(10);
+                    AggressiveGC();
                 }
             }
             catch (Exception ex) // To be manually inspected
