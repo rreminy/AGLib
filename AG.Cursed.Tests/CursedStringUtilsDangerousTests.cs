@@ -123,7 +123,7 @@ namespace AG.Cursed.Tests
                     AggressiveGC();
                 }
             }
-            catch (Exception ex) // To be manually inspected
+            catch (Exception ex)
             {
                 Assert.Fail(ex.ToString());
             }
