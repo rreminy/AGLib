@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>AG</PackageId>
+    <PackageId>AG.Cursed</PackageId>
   </PropertyGroup>
 
   <ItemGroup Label="StyleCop">
