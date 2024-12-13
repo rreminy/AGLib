@@ -40,7 +40,7 @@ namespace AG.Cursed.Tests
         public static unsafe TheoryData<string, int, int, bool> AllSpansAsDataCore(string fieldName, int step)
         {
             var data = new TheoryData<string, int, int, bool>();
-            foreach (var str in StringsAsData(fieldName).Select(item => (string)item[0]))
+            foreach (var str in ((IEnumerable<object[]>)StringsAsData(fieldName)).Select(item => (string)item[0]))
             {
                 for (var start = 0; start < str.Length; start += step)
                 {
