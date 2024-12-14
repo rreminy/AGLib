@@ -17,7 +17,7 @@ namespace AG.Cursed.Tests
 
         // Don't ask me over my choice of strings
         private static readonly string[] s_shortStrings = ["Hello, World!", string.Empty, "Bye, World!", new string("Gem was here."), $"The value of PI is {_random.NextDouble() * Math.PI * 2:F2}", new string('A', 13), new string(new string("Hi~ :3").AsSpan()), _random.NextDouble().ToString("F5")];
-        private static readonly string[] s_longStrings = ["Lousy Gem attempted to do cursed things", "The sky is falling apart", "Mercury and The Moon swapped places!", "I'm cooking rice with chicken", "The sun and the moon are of the same size in the sky"];
+        private static readonly string[] s_longStrings = ["Lousy Gem attempted to do cursed things", "The sky is falling apart", "Mercury and The Moon swapped places!", "I'm cooking rice with chicken", "The sun and the moon are of the same size in the sky", "This is the most cursed utility I ever made"];
 
         public static TheoryData<string> StringsAsData(string fieldName)
         {
@@ -35,7 +35,7 @@ namespace AG.Cursed.Tests
 
         public static TheoryData<string, int, int, bool> AllSpansAsData(string fieldName) => AllSpansAsDataCore(fieldName, 1);
 
-        public static unsafe TheoryData<string, int, int, bool> AllAlignedSpansAsData(string fieldName) => AllSpansAsDataCore(fieldName, sizeof(nint));
+        public static unsafe TheoryData<string, int, int, bool> AllAlignedSpansAsData(string fieldName) => AllSpansAsDataCore(fieldName, sizeof(nint) / sizeof(char));
 
         public static unsafe TheoryData<string, int, int, bool> AllSpansAsDataCore(string fieldName, int step)
         {
