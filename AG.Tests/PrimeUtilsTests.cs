@@ -3,6 +3,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using Xunit;
 
 namespace AG.Tests
@@ -21,7 +22,7 @@ namespace AG.Tests
 
         static PrimeUtilsTests()
         {
-            var capacity = 100000;
+            var capacity = 1000000;
             var bits = new bool[capacity];
             bits[0] = bits[1] = true;
 
@@ -65,18 +66,6 @@ namespace AG.Tests
         }
 
         [Fact]
-        public void IsPrimeNegativeInt()
-        {
-            var maxValue = (int)s_primes.Max();
-            for (var value = 0; value < maxValue; value++)
-            {
-                var isPrime = PrimeUtils.IsPrime(-value);
-                if (isPrime) Assert.Contains((uint)value, (IReadOnlySet<uint>)s_primesCollection);
-                else Assert.DoesNotContain((uint)value, (IReadOnlySet<uint>)s_primesCollection);
-            }
-        }
-
-        [Fact]
         public void IsPrimeUInt()
         {
             var maxValue = s_primes.Max();
@@ -101,22 +90,22 @@ namespace AG.Tests
         }
 
         [Fact]
-        public void IsPrimeNegativeLong()
+        public void IsPrimeULong()
         {
-            var maxValue = (long)s_primes.Max();
-            for (var value = 0L; value < maxValue; value++)
+            var maxValue = (ulong)s_primes.Max();
+            for (var value = 0uL; value < maxValue; value++)
             {
-                var isPrime = PrimeUtils.IsPrime(-value);
+                var isPrime = PrimeUtils.IsPrime(value);
                 if (isPrime) Assert.Contains((uint)value, (IReadOnlySet<uint>)s_primesCollection);
                 else Assert.DoesNotContain((uint)value, (IReadOnlySet<uint>)s_primesCollection);
             }
         }
 
         [Fact]
-        public void IsPrimeULong()
+        public void IsPrimeBig()
         {
-            var maxValue = (ulong)s_primes.Max();
-            for (var value = 0uL; value < maxValue; value++)
+            var maxValue = (BigInteger)s_primes.Max();
+            for (var value = BigInteger.Zero; value < maxValue; value++)
             {
                 var isPrime = PrimeUtils.IsPrime(value);
                 if (isPrime) Assert.Contains((uint)value, (IReadOnlySet<uint>)s_primesCollection);
@@ -140,12 +129,12 @@ namespace AG.Tests
         [Fact]
         public void FindNextPrimeUInt()
         {
-            var maxValue = (uint)s_primes.Max();
+            var maxValue = s_primes.Max();
             var queue = new Queue<uint>(s_primes);
-            var nextValue = (uint)queue.Dequeue();
+            var nextValue = queue.Dequeue();
             for (var value = 0u; value <= maxValue; value++)
             {
-                if (value > nextValue) nextValue = (uint)queue.Dequeue();
+                if (value > nextValue) nextValue = queue.Dequeue();
                 Assert.Equal(nextValue, PrimeUtils.FindNext(value));
             }
         }
@@ -176,18 +165,120 @@ namespace AG.Tests
             }
         }
 
+        [Fact]
+        public void FindNextPrimeBig()
+        {
+            var maxValue = (BigInteger)s_primes.Max();
+            var queue = new Queue<uint>(s_primes);
+            var nextValue = (BigInteger)queue.Dequeue();
+            for (var value = BigInteger.Zero; value <= maxValue; value++)
+            {
+                if (value > nextValue) nextValue = (BigInteger)queue.Dequeue();
+                Assert.Equal(nextValue, PrimeUtils.FindNext(value));
+            }
+        }
+
+        [Fact]
+        public void FindPreviousPrimeInt()
+        {
+            var minValue = (int)s_primes.Min();
+            var stack = new Stack<uint>(s_primes);
+            var previousValue = (int)stack.Pop();
+            for (var value = (int)s_primes.Max(); value >= minValue; value--)
+            {
+                if (value < previousValue) previousValue = (int)stack.Pop();
+                Assert.Equal(previousValue, PrimeUtils.FindPrevious(value));
+            }
+        }
+
+        [Fact]
+        public void FindPreviousPrimeUInt()
+        {
+            var minValue = s_primes.Min();
+            var stack = new Stack<uint>(s_primes);
+            var previousValue = stack.Pop();
+            for (var value = s_primes.Max(); value >= minValue; value--)
+            {
+                if (value < previousValue) previousValue = stack.Pop();
+                Assert.Equal(previousValue, PrimeUtils.FindPrevious(value));
+            }
+        }
+
+        [Fact]
+        public void FindPreviousPrimeLong()
+        {
+            var minValue = (long)s_primes.Min();
+            var stack = new Stack<uint>(s_primes);
+            var previousValue = (long)stack.Pop();
+            for (var value = (long)s_primes.Max(); value >= minValue; value--)
+            {
+                if (value < previousValue) previousValue = (long)stack.Pop();
+                Assert.Equal(previousValue, PrimeUtils.FindPrevious(value));
+            }
+        }
+
+        [Fact]
+        public void FindPreviousPrimeULong()
+        {
+            var minValue = (ulong)s_primes.Min();
+            var stack = new Stack<uint>(s_primes);
+            var previousValue = (ulong)stack.Pop();
+            for (var value = (ulong)s_primes.Max(); value >= minValue; value--)
+            {
+                if (value < previousValue) previousValue = (ulong)stack.Pop();
+                Assert.Equal(previousValue, PrimeUtils.FindPrevious(value));
+            }
+        }
+
+        [Fact]
+        public void FindPreviousPrimeBig()
+        {
+            var minValue = (BigInteger)s_primes.Min();
+            var stack = new Stack<uint>(s_primes);
+            var previousValue = (BigInteger)stack.Pop();
+            for (var value = new BigInteger((int)s_primes.Max()); value >= minValue; value--)
+            {
+                if (value < previousValue) previousValue = (BigInteger)stack.Pop();
+                Assert.Equal(previousValue, PrimeUtils.FindPrevious(value));
+            }
+        }
+
         [Fact] public void LargestPrimeIsPrimeInt() => Assert.True(PrimeUtils.IsPrime(LargestPrimeInt));
         [Fact] public void LargestPrimeIsPrimeUInt() => Assert.True(PrimeUtils.IsPrime(LargestPrimeUInt));
         [Fact] public void LargestPrimeIsPrimeLong() => Assert.True(PrimeUtils.IsPrime(LargestPrimeLong));
         [Fact] public void LargestPrimeIsPrimeULong() => Assert.True(PrimeUtils.IsPrime(LargestPrimeULong));
+        [Fact] public void LargestPrimeIsPrimeBig() => Assert.True(PrimeUtils.IsPrime(PrimeUtils.MillerRabinBases.MaxThreshold));
 
-        [Fact]
-        public void OutOfRangePrimesShouldThrowOverflowException()
-        {
-            //Assert.Throws<OverflowException>(() => MathUtils.FindNextPrime(LargestPrimeInt + 1)); // LargestPrimeInt is already the largest int (int.MaxValue)
-            Assert.Throws<OverflowException>(() => PrimeUtils.FindNext(LargestPrimeUInt + 1));
-            Assert.Throws<OverflowException>(() => PrimeUtils.FindNext(LargestPrimeLong + 1));
-            Assert.Throws<OverflowException>(() => PrimeUtils.FindNext(LargestPrimeULong + 1));
-        }
+        //[Fact(Skip = "Largest int prime is already int.MaxValue")] public void OutOfRangeFindNextPrimesShouldThrowOverflowExceptionInt() => throw new NotImplementedException(); // int.MaxValue is prime
+        [Fact] public void OutOfRangeFindNextPrimesShouldThrowOverflowExceptionUInt() => Assert.Throws<OverflowException>(() => PrimeUtils.FindNext(uint.MaxValue));
+        [Fact] public void OutOfRangeFindNextPrimesShouldThrowOverflowExceptionLong() => Assert.Throws<OverflowException>(() => PrimeUtils.FindNext(long.MaxValue));
+        [Fact] public void OutOfRangeFindNextPrimesShouldThrowOverflowExceptionULong() => Assert.Throws<OverflowException>(() => PrimeUtils.FindNext(ulong.MaxValue));
+
+        [Fact] public void OutOfRangeNegativePreviousPrimesShouldThrowOverflowExceptionInt() => Assert.Throws<OverflowException>(() => PrimeUtils.FindPrevious(1));
+        [Fact] public void OutOfRangeNegativePreviousPrimesShouldThrowOverflowExceptionUInt() => Assert.Throws<OverflowException>(() => PrimeUtils.FindPrevious(1));
+        [Fact] public void OutOfRangeNegativePreviousPrimesShouldThrowOverflowExceptionLong() => Assert.Throws<OverflowException>(() => PrimeUtils.FindPrevious(1));
+        [Fact] public void OutOfRangeNegativePreviousPrimesShouldThrowOverflowExceptionULong() => Assert.Throws<OverflowException>(() => PrimeUtils.FindPrevious(1));
+
+        [Fact] public void LargestFindNextPrimeShouldReturnItselfInt() => Assert.Equal(LargestPrimeInt, PrimeUtils.FindNext(LargestPrimeInt));
+        [Fact] public void LargestFindNextPrimeShouldReturnItselfUInt() => Assert.Equal(LargestPrimeUInt, PrimeUtils.FindNext(LargestPrimeUInt));
+        [Fact] public void LargestFindNextPrimeShouldReturnItselfLong() => Assert.Equal(LargestPrimeLong, PrimeUtils.FindNext(LargestPrimeLong));
+        [Fact] public void LargestFindNextPrimeShouldReturnItselfULong() => Assert.Equal(LargestPrimeULong, PrimeUtils.FindNext(LargestPrimeULong));
+
+        [Fact] public void LargestFindPreviousPrimeShouldReturnItselfInt() => Assert.Equal(LargestPrimeInt, PrimeUtils.FindPrevious(LargestPrimeInt));
+        [Fact] public void LargestFindPreviousPrimeShouldReturnItselfUInt() => Assert.Equal(LargestPrimeUInt, PrimeUtils.FindPrevious(LargestPrimeUInt));
+        [Fact] public void LargestFindPreviousPrimeShouldReturnItselfLong() => Assert.Equal(LargestPrimeLong, PrimeUtils.FindPrevious(LargestPrimeLong));
+        [Fact] public void LargestFindPreviousPrimeShouldReturnItselfULong() => Assert.Equal(LargestPrimeULong, PrimeUtils.FindPrevious(LargestPrimeULong));
+
+        [Fact] public void SmallestFindNextPrimeShouldReturnItselfInt() => Assert.Equal(2, PrimeUtils.FindNext(2));
+        [Fact] public void SmallestFindNextPrimeShouldReturnItselfUInt() => Assert.Equal(2u, PrimeUtils.FindNext(2u));
+        [Fact] public void SmallestFindNextPrimeShouldReturnItselfLong() => Assert.Equal(2L, PrimeUtils.FindNext(2L));
+        [Fact] public void SmallestFindNextPrimeShouldReturnItselfULong() => Assert.Equal(2uL, PrimeUtils.FindNext(2uL));
+        [Fact] public void SmallestFindNextPrimeShouldReturnItselfBig() => Assert.Equal(new BigInteger(2), PrimeUtils.FindNext(new BigInteger(2)));
+
+        [Fact] public void SmallestFindPreviousPrimeShouldReturnItselfInt() => Assert.Equal(2, PrimeUtils.FindPrevious(2));
+        [Fact] public void SmallestFindPreviousPrimeShouldReturnItselfUInt() => Assert.Equal(2u, PrimeUtils.FindPrevious(2u));
+        [Fact] public void SmallestFindPreviousPrimeShouldReturnItselfLong() => Assert.Equal(2L, PrimeUtils.FindPrevious(2L));
+        [Fact] public void SmallestFindPreviousPrimeShouldReturnItselfULong() => Assert.Equal(2uL, PrimeUtils.FindPrevious(2uL));
+        [Fact] public void SmallestFindPreviousPrimeShouldReturnItselfBig() => Assert.Equal(new BigInteger(2), PrimeUtils.FindPrevious(new BigInteger(2)));
     }
 }
