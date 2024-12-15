@@ -19,46 +19,7 @@ namespace AG
         private const int TinyPrimesMax = TinyPrimesBytes * 16;
 
         private static readonly byte[] s_tinyPrimes = GenerateTinyPrimes();
-        private static readonly ConcurrentDictionary<uint, bool> s_intPrimes = [];
-        private static readonly ConcurrentDictionary<ulong, bool> s_longPrimes = [];
-
         private static readonly uint PerformanceThreshold = FindPerformanceThreshold();
-
-        private static uint FindPerformanceThreshold()
-        {
-            for (var threshold = TinyPrimesMax * 2; threshold < 1024 * 1024 * 1024; threshold += 1024)
-            {
-                var number = (uint)FindNext(threshold);
-
-                for (var attempt = 1; attempt <= 5; attempt++)
-                {
-                    var poly = Measure(number => IsPrimeCore(number, (uint)Math.Sqrt(number)), number);
-                    var miller = Measure(number => MillerRabin.IsPrimeInternal(number), number);
-                    if (miller <= poly)
-                    {
-                        if (attempt == 3) return (uint)threshold;
-                    }
-                    else break;
-                }
-            }
-            return 1024 * 1024 * 1024;
-        }
-
-        public static long Measure(Func<uint, bool> func, uint number)
-        {
-            const int trials = 15;
-
-            var results = new long[trials];
-            for (var index = 0; index < trials; index++)
-            {
-                var sw = Stopwatch.StartNew();
-                _ = func(number);
-                sw.Stop();
-                results[index] = sw.Elapsed.Ticks;
-            }
-            Array.Sort(results);
-            return (long)results.Skip(6).Take(3).Average();
-        }
 
         /// <summary>Determine if a number is prime.</summary>
         /// <param name="number">Number to check.</param>
@@ -86,8 +47,6 @@ namespace AG
             if (limit * limit == number) return false;
             if (number < PerformanceThreshold) return IsPrimeCore(number, limit);
             return MillerRabin.IsPrimeInternal(number);
-            //return s_intPrimes.GetOrAdd(number, static number => MillerRabin.IsPrimeInternal(number));
-            //return s_intPrimes.GetOrAdd(number, static (number, limit) => IsPrimeCore(number, limit), limit);
         }
 
         /// <summary>Determine if a number is prime.</summary>
@@ -117,8 +76,6 @@ namespace AG
             if (limit * limit == number) return false;
             if (number < PerformanceThreshold) return IsPrimeCore(number, limit);
             return MillerRabin.IsPrimeInternal(number);
-            //return s_longPrimes.GetOrAdd(number, static number => MillerRabin.IsPrimeInternal(number));
-            //return s_longPrimes.GetOrAdd(number, static (number, limit) => IsPrimeCore(number, limit), limit);
         }
 
         /// <summary>Determine if a number is prime.</summary>
@@ -139,7 +96,6 @@ namespace AG
             if (limit * limit == number) return false;
             if (number < PerformanceThreshold) return IsPrimeCore(number, limit);
             return MillerRabin.IsPrimeInternal(number);
-            //return IsPrimeCore(number, limit);
         }
 
         /// <summary>Finds the next prime number starting from a specified <paramref name="number"/>.</summary>
@@ -456,6 +412,42 @@ namespace AG
                 if (IsPrime(number)) return number;
                 if (number == 1) ThrowHelper.Throw(new OverflowException());
             }
+        }
+
+        private static uint FindPerformanceThreshold()
+        {
+            for (var threshold = TinyPrimesMax * 2; threshold < 1024 * 1024 * 1024; threshold += 1024)
+            {
+                var number = (uint)FindNext(threshold);
+
+                for (var attempt = 1; attempt <= 5; attempt++)
+                {
+                    var poly = Measure(number => IsPrimeCore(number, (uint)Math.Sqrt(number)), number);
+                    var miller = Measure(number => MillerRabin.IsPrimeInternal(number), number);
+                    if (miller <= poly)
+                    {
+                        if (attempt == 3) return (uint)threshold;
+                    }
+                    else break;
+                }
+            }
+            return 1024 * 1024 * 1024;
+        }
+
+        private static long Measure(Func<uint, bool> func, uint number)
+        {
+            const int trials = 15;
+
+            var results = new long[trials];
+            for (var index = 0; index < trials; index++)
+            {
+                var sw = Stopwatch.StartNew();
+                _ = func(number);
+                sw.Stop();
+                results[index] = sw.Elapsed.Ticks;
+            }
+            Array.Sort(results);
+            return (long)results.Skip(6).Take(3).Average();
         }
     }
 }
