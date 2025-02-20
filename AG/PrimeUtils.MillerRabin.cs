@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Globalization;
 
 namespace AG
 {
     /// <content>Miller Rabin algorithm.</content>
     public static partial class PrimeUtils
     {
-        // Taken from: https://raw.githubusercontent.com/Open-NET-Libraries/Open.Numeric.Primes/refs/heads/master/value/MillerRabin.cs
+        // Taken from: https://github.com/Open-NET-Libraries/Open.Numeric.Primes/blob/master/source/MillerRabin.cs
         // With some changes to extend prime processing range.
 
         internal static class Big
@@ -62,16 +59,22 @@ namespace AG
             }
         }
 
+        /* Based on: https://stackoverflow.com/questions/4236673/sample-code-for-fast-primality-testing-in-c-sharp#4236870 */
         /// <summary>
         /// Miller-Rabin prime utility.
         /// </summary>
         internal static class MillerRabin
         {
-            /* Based on: https://stackoverflow.com/questions/4236673/sample-code-for-fast-primality-testing-in-c-sharp#4236870 */
-            internal static bool IsPrimeInternal(ulong value)
-            {
-                var ar = MillerRabinBases.GetBases(value);
+            internal static bool IsProbablePrimeInternal(ulong value) => IsPrimeInternal(value, MillerRabinBases.GetBases(1));
 
+            internal static bool IsProbablePrimeInternal(BigInteger value) => IsPrimeInternal(value, MillerRabinBases.GetBases(1));
+
+            internal static bool IsPrimeInternal(ulong value) => IsPrimeInternal(value, MillerRabinBases.GetBases(value));
+
+            internal static bool IsPrimeInternal(BigInteger value) => IsPrimeInternal(value, MillerRabinBases.GetBases(value));
+
+            internal static bool IsPrimeInternal(ulong value, ReadOnlySpan<uint> ar)
+            {
                 var d = value - 1;
                 var s = 0;
 
@@ -102,10 +105,8 @@ namespace AG
                 return true;
             }
 
-            internal static bool IsPrimeInternal(BigInteger value)
+            internal static bool IsPrimeInternal(BigInteger value, ReadOnlySpan<uint> ar)
             {
-                var ar = MillerRabinBases.GetBases(value);
-
                 var d = value - 1;
                 var s = 0;
 

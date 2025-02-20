@@ -22,6 +22,13 @@ namespace AG
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static void Throw(Exception exception) => throw exception;
 
+        /// <summary>Throws an <see cref="Exception"/> created from <paramref name="exceptionFactory"/>.</summary>
+        /// <param name="exceptionFactory"><see cref="Exception"/> factory.</param>
+        /// <exception cref="Exception"><see cref="Exception"/> thrown.</exception>
+        [DoesNotReturn]
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static void Throw(Func<Exception> exceptionFactory) => throw exceptionFactory();
+
         /// <summary>Throws an exception of type <typeparamref name="T"/> if <paramref name="condition"/> is <see langword="true"/>.</summary>
         /// <typeparam name="T"><see cref="Exception"/>type to throw.</typeparam>
         /// <param name="condition">Condition for throwing.</param>

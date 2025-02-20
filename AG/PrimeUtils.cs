@@ -416,27 +416,23 @@ namespace AG
 
         private static uint FindPerformanceThreshold()
         {
-            for (var threshold = TinyPrimesMax * 2; threshold < 1024 * 1024 * 1024; threshold += 1024)
+            const int startingThreshold = TinyPrimesMax * 2;
+            const int thresholdIncremet = 65536;
+            const int maxThreshold = 1024 * 1024 * 1024;
+
+            for (var threshold = startingThreshold; threshold < maxThreshold; threshold += thresholdIncremet)
             {
                 var number = (uint)FindNext(threshold);
-
-                for (var attempt = 1; attempt <= 5; attempt++)
-                {
-                    var poly = Measure(number => IsPrimeCore(number, (uint)Math.Sqrt(number)), number);
-                    var miller = Measure(number => MillerRabin.IsPrimeInternal(number), number);
-                    if (miller <= poly)
-                    {
-                        if (attempt == 3) return (uint)threshold;
-                    }
-                    else break;
-                }
+                var poly = Measure(number => IsPrimeCore(number, (uint)Math.Sqrt(number)), number);
+                var miller = Measure(number => MillerRabin.IsPrimeInternal(number), number);
+                if (miller < poly) return (uint)threshold;
             }
-            return 1024 * 1024 * 1024;
+            return maxThreshold;
         }
 
         private static long Measure(Func<uint, bool> func, uint number)
         {
-            const int trials = 15;
+            const int trials = 256;
 
             var results = new long[trials];
             for (var index = 0; index < trials; index++)
@@ -447,7 +443,7 @@ namespace AG
                 results[index] = sw.Elapsed.Ticks;
             }
             Array.Sort(results);
-            return (long)results.Skip(6).Take(3).Average();
+            return results[0];
         }
     }
 }
