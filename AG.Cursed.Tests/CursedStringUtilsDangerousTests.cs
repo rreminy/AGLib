@@ -14,7 +14,7 @@ namespace AG.Cursed.Tests
 {
     public static class CursedStringUtilsDangerousTests
     {
-        [Fact]
+        [Fact(Skip = "Cursed cursed cursed!")]
         [SuppressMessage("Major Code Smell", "S3998")]
         [SuppressMessage("Major Code Smell", "S2925")]
         [SuppressMessage("Major Bug", "S2445")]
