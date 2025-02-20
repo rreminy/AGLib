@@ -22,8 +22,11 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309", Justification = "Coding preferences.")] // Blame source.dot.net for this.
 [assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1311", Justification = "Coding preferences.")]
 
+[assembly: SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1407:Arithmetic expressions should declare precedence", Justification = "Reviewed.")]
+
 [assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1502", Justification = "Reviewed.")]
 [assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1503", Justification = "Reviewed.")]
+[assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1512", Justification = "Reviewed.")]
 [assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1513", Justification = "Reviewed.")]
 [assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1514", Justification = "Reviewed.")]
 [assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1520", Justification = "Reviewed.")]

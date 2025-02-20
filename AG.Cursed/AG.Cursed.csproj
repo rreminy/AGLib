@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\packages.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AnalysisMode>all</AnalysisMode>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>AG.Cursed</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup Label="StyleCop">
+    <AdditionalFiles Include="..\stylecop.json"></AdditionalFiles>
+    <Compile Include="..\StyleCopSuppressions.cs" Link="StyleCopSuppressions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
