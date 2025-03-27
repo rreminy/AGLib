@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>AG.Threading</PackageId>
+    <PackageId>AG.EnumLocalization</PackageId>
   </PropertyGroup>
 
   <ItemGroup Label="StyleCop">
@@ -27,7 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AG\AG.csproj" />
+    <Folder Include="Attributes\" />
+    <Folder Include="Internal\" />
   </ItemGroup>
 
 </Project>
