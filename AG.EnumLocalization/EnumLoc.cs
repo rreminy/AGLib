@@ -101,12 +101,32 @@ namespace AG.EnumLocalization
         /// <typeparam name="T">Enum <see cref="Type"/>.</typeparam>
         /// <param name="value">Enum value.</param>
         /// <param name="langCode">Language code.</param>
+        /// <param name="args">Format arguments.</param>
         /// <returns>Enum localized string.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetLocString<T>(this T value, string? langCode = null) where T : struct, Enum
+        public static string GetLocString<T>(this T value, string? langCode = null, params ReadOnlySpan<object?> args) where T : struct, Enum
+            => value.GetLocString(langCode, null, args);
+
+        /// <summary>Get the enum localization string for this specific enum value for <paramref name="langCode"/>.</summary>
+        /// <typeparam name="T">Enum <see cref="Type"/>.</typeparam>
+        /// <param name="value">Enum value.</param>
+        /// <param name="langCode">Language code.</param>
+        /// <param name="provider">Format provider.</param>
+        /// <param name="args">Format arguments.</param>
+        /// <returns>Enum localized string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetLocString<T>(this T value, string? langCode = null, IFormatProvider? provider = null, params ReadOnlySpan<object?> args) where T : struct, Enum
         {
             var key = value.GetLocKey();
-            return EnumLocEngine.GetString(typeof(T).Assembly, key, langCode);
+            var result = EnumLocEngine.GetString(typeof(T).Assembly, key, langCode);
+            try
+            {
+                return string.Format(provider, result, args);
+            }
+            catch (FormatException)
+            {
+                return result;
+            }
         }
 
         /// <summary>Get the enum localization fallback for this specific enum value.</summary>
