@@ -31,7 +31,15 @@ namespace AG.EnumLocalization.Tests
         [InlineData(Direction.Southwest, "Compass.SW", "SW")]
         [InlineData(Direction.West, "Compass.W", "W")]
         [InlineData(Direction.Northwest, "Compass.NW", "NW")]
-        [InlineData(Direction.Up, "Compass.Up", "Up")]
+        [InlineData(Direction.N, "Compass.N", "N")] // Alias
+        [InlineData(Direction.NE, "Compass.NE", "NE")] // Alias
+        [InlineData(Direction.E, "Compass.E", "E")] // Alias
+        [InlineData(Direction.SE, "Compass.SE", "SE")] // Alias
+        [InlineData(Direction.S, "Compass.S", "S")] // Alias
+        [InlineData(Direction.SW, "Compass.SW", "SW")] // Alias
+        [InlineData(Direction.W, "Compass.W", "W")] // Alias
+        [InlineData(Direction.NW, "Compass.NW", "NW")] // Alias
+        [InlineData(Direction.Up, "Compass.Up", "Up")] // Alias
         [InlineData(Direction.Down, "Compass.Down", "Down")]
         [InlineData(Direction.Forward, "Compass.Forward", "Front")]
         [InlineData(Direction.Backward, "Compass.Backward", "Back")]

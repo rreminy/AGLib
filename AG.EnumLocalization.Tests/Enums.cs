@@ -55,7 +55,31 @@ namespace AG.EnumLocalization.Tests
         Backward = long.MaxValue,
 
         [EnumLoc("Middle", Fallback = "Somewhere")] // Compass.Middle = Somewhere
-        Center = long.MinValue
+        Center = long.MinValue,
+
+        [EnumLocAlias<Direction>(North)]
+        N,
+
+        [EnumLocAlias<Direction>(Northeast)]
+        NE,
+
+        [EnumLocAlias<Direction>(East)]
+        E,
+
+        [EnumLocAlias<Direction>(Southeast)]
+        SE,
+
+        [EnumLocAlias<Direction>(South)]
+        S,
+
+        [EnumLocAlias<Direction>(Southwest)]
+        SW,
+
+        [EnumLocAlias<Direction>(West)]
+        W,
+
+        [EnumLocAlias<Direction>(Northwest)]
+        NW
     }
 
     public enum Mood
