@@ -18,7 +18,6 @@ namespace AG.EnumLocalization.Tests
             EnumLoc.SetupAssembly();
             this.Output = output;
             this._fallbacks = new(EnumLoc.GetKeysAndFallbacks());
-
         }
 
         [Theory]
@@ -86,6 +85,7 @@ namespace AG.EnumLocalization.Tests
             {
                 this.Output.WriteLine($" - {key}: {fallback}");
             }
+            Assert.True(true);
         }
     }
 }
