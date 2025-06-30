@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace AG.EnumLocalization.Tests
 {
     public class BasicTests
     {
         private readonly Dictionary<string, string> _fallbacks;
-        public BasicTests()
+
+        private ITestOutputHelper Output { get; }
+
+        public BasicTests(ITestOutputHelper output)
         {
             EnumLoc.SetupAssembly();
+            this.Output = output;
             this._fallbacks = new(EnumLoc.GetKeysAndFallbacks());
+
         }
 
         [Theory]
@@ -62,6 +69,7 @@ namespace AG.EnumLocalization.Tests
         [InlineData(Number.Ten, "Ten", "10")]
         [InlineData(Number.Eleven, "Eleven", "11")]
         [InlineData(Number.Twelve, "Twelve", "12")]
+        [InlineData(Aliases.Fun, "Mood.Happy", "Happy")] // Alias
         public void KeyAndFallback<T>(T value, string key, string fallback) where T : struct, Enum
         {
             // Notes:
@@ -70,6 +78,14 @@ namespace AG.EnumLocalization.Tests
             Assert.Equal(fallback, value.GetLocFallback());
         }
 
-
+        [Fact]
+        public void Dump()
+        {
+            this.Output.WriteLine("Dumping keys and fallbacks. This test always succeed.");
+            foreach (var (key, fallback) in this._fallbacks.OrderBy(kvp => kvp.Key))
+            {
+                this.Output.WriteLine($" - {key}: {fallback}");
+            }
+        }
     }
 }

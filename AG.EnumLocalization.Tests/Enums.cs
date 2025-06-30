@@ -82,6 +82,12 @@ namespace AG.EnumLocalization.Tests
         NW
     }
 
+    public enum Aliases
+    {
+        [EnumLocAlias<Mood>(Mood.Happy)]
+        Fun,
+    }
+
     public enum Mood
     {
         [EnumLoc] // Mood.Happy
