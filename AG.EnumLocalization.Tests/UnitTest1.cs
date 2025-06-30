@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace AG.EnumLocalization.Tests
 {
     public class BasicTests
     {
         private readonly Dictionary<string, string> _fallbacks;
-        public BasicTests()
+
+        private ITestOutputHelper Output { get; }
+
+        public BasicTests(ITestOutputHelper output)
         {
             EnumLoc.SetupAssembly();
+            this.Output = output;
             this._fallbacks = new(EnumLoc.GetKeysAndFallbacks());
         }
 
@@ -31,7 +37,15 @@ namespace AG.EnumLocalization.Tests
         [InlineData(Direction.Southwest, "Compass.SW", "SW")]
         [InlineData(Direction.West, "Compass.W", "W")]
         [InlineData(Direction.Northwest, "Compass.NW", "NW")]
-        [InlineData(Direction.Up, "Compass.Up", "Up")]
+        [InlineData(Direction.N, "Compass.N", "N")] // Alias
+        [InlineData(Direction.NE, "Compass.NE", "NE")] // Alias
+        [InlineData(Direction.E, "Compass.E", "E")] // Alias
+        [InlineData(Direction.SE, "Compass.SE", "SE")] // Alias
+        [InlineData(Direction.S, "Compass.S", "S")] // Alias
+        [InlineData(Direction.SW, "Compass.SW", "SW")] // Alias
+        [InlineData(Direction.W, "Compass.W", "W")] // Alias
+        [InlineData(Direction.NW, "Compass.NW", "NW")] // Alias
+        [InlineData(Direction.Up, "Compass.Up", "Up")] // Alias
         [InlineData(Direction.Down, "Compass.Down", "Down")]
         [InlineData(Direction.Forward, "Compass.Forward", "Front")]
         [InlineData(Direction.Backward, "Compass.Backward", "Back")]
@@ -54,6 +68,7 @@ namespace AG.EnumLocalization.Tests
         [InlineData(Number.Ten, "Ten", "10")]
         [InlineData(Number.Eleven, "Eleven", "11")]
         [InlineData(Number.Twelve, "Twelve", "12")]
+        [InlineData(Aliases.Fun, "Mood.Happy", "Happy")] // Alias
         public void KeyAndFallback<T>(T value, string key, string fallback) where T : struct, Enum
         {
             // Notes:
@@ -62,6 +77,15 @@ namespace AG.EnumLocalization.Tests
             Assert.Equal(fallback, value.GetLocFallback());
         }
 
-
+        [Fact]
+        public void Dump()
+        {
+            this.Output.WriteLine("Dumping keys and fallbacks. This test always succeed.");
+            foreach (var (key, fallback) in this._fallbacks.OrderBy(kvp => kvp.Key))
+            {
+                this.Output.WriteLine($" - {key}: {fallback}");
+            }
+            Assert.True(true);
+        }
     }
 }

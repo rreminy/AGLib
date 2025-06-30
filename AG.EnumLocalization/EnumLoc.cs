@@ -40,11 +40,13 @@ namespace AG.EnumLocalization
             EnumLocEngine.RemoveStrings(assembly);
 
             var types = assembly.GetTypes()
-                .Where(type => type.IsEnum);
+                .Where(type => type.IsEnum)
+                .ToList();
 
+            foreach (var type in types) EnumKeyProvider.AnalyzeKeysAndFallbacks(type);
+            foreach (var type in types) EnumKeyProvider.AnalyzeAliases(type);
             foreach (var type in types)
             {
-                EnumKeyProvider.AnalyzeType(type);
                 var data = EnumKeyProvider.GetKeysAndFallbacks(type);
                 foreach (var (key, fallback) in data)
                 {

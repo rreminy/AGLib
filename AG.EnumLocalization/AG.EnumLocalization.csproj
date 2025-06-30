@@ -8,6 +8,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AnalysisMode>all</AnalysisMode>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -27,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Attributes\" />
     <Folder Include="Internal\" />
   </ItemGroup>
 

@@ -6,13 +6,13 @@ namespace AG.EnumLocalization.Attributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class EnumLocAttribute : Attribute
     {
-        /// <summary>Language string key. Enum value name if <see langword="null"/>.</summary>
+        /// <summary>Gets the language string key for this enum value. Enum value name if <see langword="null"/>.</summary>
         public string? Key { get; init; }
 
-        /// <summary>Fallback for this enum value. Enum value name if <see langword="null"/>.</summary>
+        /// <summary>Gets or initiaslizes the fallback string for this enum value. Enum value name if <see langword="null"/>.</summary>
         public string? Fallback { get; init; }
 
-        /// <summary>Initializes an <see cref="EnumLocAttribute"/> istance.</summary>
+        /// <summary>Initializes a new instance of the <see cref="EnumLocAttribute"/> class with a specified <paramref name="key"/> and <paramref name="fallback"/>.</summary>
         /// <param name="key">Laguage string key. Enum value name if <see langword="null"/>.</param>
         /// <param name="fallback">Language string fallback. Enum value name if <see langword="null"/>.</param>
         public EnumLocAttribute(string? key = null, string? fallback = null)
