@@ -33,8 +33,9 @@ namespace AG.EnumLocalization
         /// </list>
         /// </remarks>
         /// <param name="assembly"><see cref="Assembly"/>.</param>
+        /// <param name="debug">Use keys instead of fallback text for fallbacks.</param>
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.PreserveSig)]
-        public static void SetupAssembly(Assembly? assembly = null)
+        public static void SetupAssembly(Assembly? assembly = null, bool debug = false)
         {
             assembly ??= Assembly.GetCallingAssembly();
             EnumLocEngine.RemoveStrings(assembly);
@@ -50,7 +51,7 @@ namespace AG.EnumLocalization
                 var data = EnumKeyProvider.GetKeysAndFallbacks(type);
                 foreach (var (key, fallback) in data)
                 {
-                    EnumLocEngine.AddOrReplaceFallback(assembly, key, fallback);
+                    EnumLocEngine.AddOrReplaceFallback(assembly, key, debug ? key : fallback);
                 }
             }
         }
