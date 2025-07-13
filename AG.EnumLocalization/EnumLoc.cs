@@ -15,8 +15,12 @@ namespace AG.EnumLocalization
         /// <param name="langCode">Language code.</param>
         /// <param name="assembly"><see cref="Assembly"/>.</param>
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.PreserveSig)]
-        public static void SetDefaultLanguage(string langCode, Assembly? assembly = null)
-            => EnumLocEngine.DefaultLanguages[assembly ?? Assembly.GetCallingAssembly()] = langCode;
+        public static void SetDefaultLanguage(string? langCode, Assembly? assembly = null)
+        {
+            assembly ??= Assembly.GetCallingAssembly();
+            if (langCode is null) EnumLocEngine.DefaultLanguages.TryRemove(assembly, out _);
+            else EnumLocEngine.DefaultLanguages[assembly] = langCode;
+        }
 
         /// <summary>Gets the default language code for a specific <paramref name="assembly"/>.</summary>
         /// <param name="assembly"><see cref="Assembly"/>.</param>
