@@ -109,7 +109,21 @@ namespace AG.EnumLocalization
         public static string GetLocString<T>(this T value, string? langCode = null) where T : struct, Enum
         {
             var key = value.GetLocKey();
+
+            // NOTE: Do not replace with call to the string overload - different optimization settings.
             return EnumLocEngine.GetString(typeof(T).Assembly, key, langCode);
+        }
+
+        /// <summary>Get the localization string for a specific <paramref name="key"/>.</summary>
+        /// <param name="key">String key.</param>
+        /// <param name="langCode">Language code.</param>
+        /// <param name="assembly"><see cref="Assembly"/>.</param>
+        /// <returns>Localized string.</returns>
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.PreserveSig)]
+        public static string GetLocString(string key, string? langCode = null, Assembly? assembly = null)
+        {
+            assembly ??= Assembly.GetCallingAssembly();
+            return EnumLocEngine.GetString(assembly, key, langCode);
         }
 
         /// <summary>Get the enum localization fallback for this specific enum value.</summary>
@@ -121,6 +135,17 @@ namespace AG.EnumLocalization
         {
             var key = value.GetLocKey();
             return EnumLocEngine.GetFallback(typeof(T).Assembly, key);
+        }
+
+        /// <summary>Get the localization fallback for this specific <paramref name="key"/>.</summary>
+        /// <param name="key">String key.</param>
+        /// <param name="assembly"><see cref="Assembly"/>.</param>
+        /// <returns>Enum localization fallback string.</returns>
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.PreserveSig)]
+        public static string GetLocFallback(string key, Assembly? assembly = null)
+        {
+            assembly ??= Assembly.GetCallingAssembly();
+            return EnumLocEngine.GetFallback(assembly, key);
         }
     }
 }
