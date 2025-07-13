@@ -21,7 +21,7 @@ namespace AG.EnumLocalization.Internal
             if (s_strings.TryGetValue(assembly, out var keys) && keys.TryGetValue(key, out var langs))
             {
                 if (langCode is not null && langs.TryGetValue(langCode, out var result)) return result;
-                if (DefaultLanguages.TryGetValue(assembly, out var defaultLangCode) && defaultLangCode is not null && defaultLangCode != langCode && langs.TryGetValue(defaultLangCode, out result)) return result;
+                if (DefaultLanguages.TryGetValue(assembly, out var defaultLangCode) && defaultLangCode != langCode && langs.TryGetValue(defaultLangCode, out result)) return result;
             }
             return GetFallback(assembly, key);
         }
